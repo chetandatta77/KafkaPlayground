@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -21,7 +22,9 @@ public class OrderproducerApplication {
 		KafkaProducer<String,Integer> producer = new KafkaProducer<String, Integer>(props);
 		ProducerRecord<String, Integer> record = new ProducerRecord<>("Order-Topic", "Mac Book Pro",10);
 		try {
-			producer.send(record);		
+			RecordMetadata recordMetadata = producer.send(record).get();
+			System.out.println(recordMetadata.partition());
+			System.out.println(recordMetadata.offset());
 			System.out.println("Message sent successfully");
 		} catch (Exception e) {
 			e.printStackTrace();
